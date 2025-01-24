@@ -2,6 +2,13 @@
 
 A new Flutter project.
 
+
+## Stack Versions
+
+Flutter 3.27.3
+Dart 3.6.1
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
