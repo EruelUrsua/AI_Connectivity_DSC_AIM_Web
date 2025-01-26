@@ -1,13 +1,16 @@
+import 'package:ai_hack_web/pages/parse.dart';
 import 'package:flutter/material.dart';
 import 'package:appbar_dropdown/appbar_dropdown.dart';
+
+
 
 class HospitalPage extends StatelessWidget {
   const HospitalPage({super.key});
 
   // static const String id = "hospitalpage";
-
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
          flexibleSpace: AppbarDropdown(
@@ -18,7 +21,9 @@ class HospitalPage extends StatelessWidget {
        ),
       ),
 
-      body: Container(),
+      body: Container(
+         
+      ),
     );
   }
 }
