@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
         selectedRoute: '/',
         onSelected: (item) {
           if (item.route != null) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HospitalPage()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HospitalPage()));
           }
         },
         header: Container(
