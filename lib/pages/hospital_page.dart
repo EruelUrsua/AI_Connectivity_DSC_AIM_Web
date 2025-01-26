@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class HospitalPage extends StatefulWidget {
+  const HospitalPage({super.key});
+
   @override
   _HospitalPageState createState() => _HospitalPageState();
 }
