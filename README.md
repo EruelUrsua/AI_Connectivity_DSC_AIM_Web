@@ -14,16 +14,14 @@ Dart 3.6.1
 https://github.com/EruelUrsua/AI_Connectivity_DSC_AIM_API
 ```
 
+## OutageAI Web app
+```
+https://eruelursua.github.io/AI_Connectivity_DSC_AIM_Web/
+```
 
-## Getting Started
+## OutageAI API hosted Railway server
+```
+https://web-production-59db.up.railway.app/predict
+```
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
