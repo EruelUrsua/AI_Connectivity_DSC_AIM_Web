@@ -9,6 +9,12 @@ Flutter 3.27.3
 Dart 3.6.1
 
 
+## OutageAI API Repository
+```
+https://github.com/EruelUrsua/AI_Connectivity_DSC_AIM_API
+```
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
