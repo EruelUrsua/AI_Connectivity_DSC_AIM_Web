@@ -1,6 +1,6 @@
-import 'package:ai_hack_web/const/constant.dart';
-import 'package:ai_hack_web/pages/parse.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class HospitalPage extends StatefulWidget {
   @override
@@ -8,31 +8,51 @@ class HospitalPage extends StatefulWidget {
 }
 
 class _HospitalPageState extends State<HospitalPage> {
- 
-  String? prediction;
-  //List<dynamic>? probability;
 
- 
-  Map<String, dynamic> simulatedInput = {
-    "Temperature": 42.0,
-    "Humidity": 95.0,
-    "Precipitation": 120.0,
-    "Signal Strength": -100.0,
-    "Packet Loss": 15,
-    "Latency": 5
-  };
+  final TextEditingController _temperatureController = TextEditingController();
+  final TextEditingController _humidityController = TextEditingController();
+  final TextEditingController _precipitationController = TextEditingController();
+  final TextEditingController _signalStrengthController = TextEditingController();
+  final TextEditingController _packetLossController = TextEditingController();
+  final TextEditingController _latencyController = TextEditingController();
 
-  Future<void> fetchPrediction() async {
+  String? prediction; 
+  //List<dynamic>? probability; 
+
+  Future<void> getPrediction() async {
+    final url = Uri.parse('http://127.0.0.1:5000/predict'); // Replace with your deployed backend URL
+
+    Map<String, dynamic> inputData = {
+      "Temperature": double.parse(_temperatureController.text),
+      "Humidity": double.parse(_humidityController.text),
+      "Precipitation": double.parse(_precipitationController.text),
+      "Signal Strength": double.parse(_signalStrengthController.text),
+      "Packet Loss": double.parse(_packetLossController.text),
+      "Latency": double.parse(_latencyController.text),
+    };
+
     try {
-      // Call the function with simulated input
-      final result = await getPrediction(simulatedInput);
-      setState(() {
-        prediction = result['prediction'].toString();
-       // probability = result['probability'];
-      });
+      // Send POST request
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(inputData),
+      );
+
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        setState(() {
+          prediction = result["Outage"] == 1 ? "Outage Likely" : "No Outage";
+          // probability = result["Due to"]; // Causal features or probabilities
+        });
+      } else {
+        setState(() {
+          prediction = "Error: ${response.statusCode}";
+        });
+      }
     } catch (e) {
       setState(() {
-        prediction = "Error: $e";
+        prediction = "Failed to connect to server.";
       });
     }
   }
@@ -41,31 +61,65 @@ class _HospitalPageState extends State<HospitalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Outage Prediction'),
+        title: Text('Hospital Outage Predictor'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
-            Text("Simulated Input Data:", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Text("Temperature: ${simulatedInput['Temperature']}°C"),
-            Text("Humidity: ${simulatedInput['Humidity']}%"),
-            Text("Precipitation: ${simulatedInput['Precipitation']} mm"),
-            Text("Signal Strength: ${simulatedInput['Signal Strength']} dBm"),
-            Text("Packet Loss: ${simulatedInput['Packet Loss']}%"),
-             Text("Latency: ${simulatedInput['Latency']}ms"),
-            SizedBox(height: 20),
-            ElevatedButton(
-              //style: ButtonStyle(backgroundColor: Colors.green),
-              onPressed: fetchPrediction,
-              child: Text('Get Prediction'),
-              
+            // Input Fields
+            TextFormField(
+              controller: _temperatureController,
+              decoration: InputDecoration(labelText: "Temperature (°C)"),
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              controller: _humidityController,
+              decoration: InputDecoration(labelText: "Humidity (%)"),
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              controller: _precipitationController,
+              decoration: InputDecoration(labelText: "Precipitation (mm)"),
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              controller: _signalStrengthController,
+              decoration: InputDecoration(labelText: "Signal Strength (dBm)"),
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              controller: _packetLossController,
+              decoration: InputDecoration(labelText: "Packet Loss (%)"),
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              controller: _latencyController,
+              decoration: InputDecoration(labelText: "Latency (ms)"),
+              keyboardType: TextInputType.number,
             ),
             SizedBox(height: 20),
-            if (prediction != null) Text("Prediction: $prediction", style: TextStyle(fontSize: 16)),
-            // if (probability != null)
-            //   Text("Probabilities: ${probability.toString()}", style: TextStyle(fontSize: 16)),
+
+            // Submit Button
+            ElevatedButton(
+              onPressed: getPrediction,
+              child: Text('Get Prediction'),
+            ),
+            SizedBox(height: 20),
+
+            if (prediction != null)
+              Text("Prediction: $prediction", style: TextStyle(fontSize: 18)),
+
+            // if (probability != null) ...[
+            //   SizedBox(height: 20),
+            //   Text("Top Causal Features:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            //   ...probability!.map((feature) {
+            //     return Text(
+            //       "${feature['Feature']}: ${feature['Importance']}%",
+            //       style: TextStyle(fontSize: 16),
+            //     );
+            //   }).toList(),
+            // ]
           ],
         ),
       ),

@@ -84,7 +84,7 @@ class HomePage extends StatelessWidget {
           color: const Color(0xff444444),
           child: const Center(
             child: Text(
-              'footer',
+              '',
               style: TextStyle(
                 color: Colors.white,
               ),
