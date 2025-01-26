@@ -1,8 +1,5 @@
 # ai_hack_web
 
-A new Flutter project.
-
-
 ## Stack Versions
 
 Flutter 3.27.3
