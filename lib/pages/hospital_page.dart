@@ -20,7 +20,7 @@ class _HospitalPageState extends State<HospitalPage> {
   //List<dynamic>? probability; 
 
   Future<void> getPrediction() async {
-    final url = Uri.parse('http://127.0.0.1:5000/predict'); // Replace with your deployed backend URL
+    final url = Uri.parse('https://web-production-59db.up.railway.app/predict'); // Replace with your deployed backend URL
 
     Map<String, dynamic> inputData = {
       "Temperature": double.parse(_temperatureController.text),
