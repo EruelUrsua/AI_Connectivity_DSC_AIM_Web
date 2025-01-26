@@ -23,3 +23,6 @@ Future<Map<String, dynamic>> getPrediction(Map<String, dynamic> inputData) async
     throw Exception("Failed to connect to the server: $e");
   }
 }
+
+// Just change the api in flutter to this one
+// 127.0.0.1
